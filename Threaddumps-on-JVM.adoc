@@ -1,0 +1,61 @@
+= Thread-dumps on JVM @ JDay Lviv
+Tomasz Borek, @LAFK_pl, lafkblogs.wordpress.com
+:toc:
+:hardbreaks:
+
+== Promise
+How can you take a threaddump? 
+Print threads? 
+What is a safepoint and why you should care? 
+Which tools can help and how? 
+And when you have the threaddump... what's in there? 
+We'll talk threads and locks. Dead and alive alike. 
+We'll talk CLI and GUI (tools, of course). 
+We'll talk about thread lifecycle. 
+And naming. Oh, the naming! 
+Example rich talk, though rather aimed at beginners. 
+
+== How can you take a threaddump?
+
+. `kill -3`
+
+
+=== About kill command
+
+NOTE: kill:: send a signal to a process
+
+ kill -9 111
+ kill -s SIGKILL 111 
+ kill -KILL 111
+
+
+May be a shell built-in AND a command: `which kill`
+Essentially a wrapper around _kill_ syscall.
+
+. `kill -L` - no such option on my Ubuntu/Bash
+.. `kill -l`
+. `/bin/kill -L`
+.. `/bin/kill -l` - same as built-in
+
+[TIP]
+.Further reading about `kill`
+====
+. http://www.linux.org/threads/kill-signals-and-commands-revised.8096/
+. http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_12_01.html
+====
+
+=== About signals
+
+`/bin/kill -L`
+
+Default? *TERM*
+
+`man --section 7 signals | grep SIGQUIT`
+`man --section 7 signals | grep Core`
+
+[CAUTION]
+.Java and signals
+==== 
+`-Xrs`:: disables default signals for Java applications
+====
+
