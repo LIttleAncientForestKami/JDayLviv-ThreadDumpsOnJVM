@@ -2,6 +2,7 @@
 Tomasz Borek, @LAFK_pl, lafkblogs.wordpress.com
 :toc:
 :hardbreaks:
+:icons: font
 
 == Promise
 How can you take a threaddump? 
@@ -58,4 +59,26 @@ Default? *TERM*
 ==== 
 `-Xrs`:: disables default signals for Java applications
 ====
+
+=== PID of a Java process?
+. ps aux | grep java
+. pgrep java
+. jps -l
+jps::
+Lists the instrumented Java Virtual Machines (JVMs) on the target
+system. This command is experimental and unsupported.
+. jcmd
+jcmd::
+sends diagnostic command requests to a running JVM.
+
+image::javapid.gif[Image shows comparison of ways above]
+
+== How can you take a threaddump?
+
+. `kill -3 JAVA_PID`
+. `jstack JAVA_PID`
+
+jstack:: 
+Prints Java thread stack traces for a Java process, core file,
+or remote debug server. This command is experimental and unsupported.
 

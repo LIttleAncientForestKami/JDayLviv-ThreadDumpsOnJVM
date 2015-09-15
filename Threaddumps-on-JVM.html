@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="Asciidoctor 0.1.4">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Threadumps on JVM @ JDay Lviv</title>
+<title>Thread-dumps on JVM @ JDay Lviv</title>
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
 article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary { display: block; }
@@ -362,7 +362,7 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
 </head>
 <body class="article">
 <div id="header">
-<h1>Threadumps on JVM @ JDay Lviv</h1>
+<h1>Thread-dumps on JVM @ JDay Lviv</h1>
 <span id="author" class="author">Tomasz Borek, @LAFK_pl, lafkblogs.wordpress.com</span><br>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
@@ -373,8 +373,10 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
 <ul class="sectlevel2">
 <li><a href="#_about_kill_command">About kill command</a></li>
 <li><a href="#_about_signals">About signals</a></li>
+<li><a href="#_pid_of_a_java_process">PID of a Java process?</a></li>
 </ul>
 </li>
+<li><a href="#_how_can_you_take_a_threaddump_2">How can you take a threaddump?</a></li>
 </ul>
 </div>
 </div>
@@ -411,14 +413,6 @@ Example rich talk, though rather aimed at beginners.</p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">NOTE: kill</dt>
-<dd>
-<p>send a signal to a process</p>
-</dd>
-</dl>
-</div>
-<div class="dlist quote">
-<dl>
-<dt>kill</dt>
 <dd>
 <p>send a signal to a process</p>
 <div class="literalblock">
@@ -515,12 +509,77 @@ Essentially a wrapper around <em>kill</em> syscall.</p>
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_pid_of_a_java_process">PID of a Java process?</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>ps aux | grep java</p>
+</li>
+<li>
+<p>pgrep java</p>
+</li>
+<li>
+<p>jps -l</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">jps</dt>
+<dd>
+<p>Lists the instrumented Java Virtual Machines (JVMs) on the target<br>
+system. This command is experimental and unsupported.</p>
+</dd>
+</dl>
+</div>
+</li>
+<li>
+<p>jcmd</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">jcmd</dt>
+<dd>
+<p>sends diagnostic command requests to a running JVM.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="javapid.gif" alt="Comparison of the above">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_can_you_take_a_threaddump_2">How can you take a threaddump?</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>kill -3</code></p>
+</li>
+<li>
+<p><code>jstack</code></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">jstack</dt>
+<dd>
+<p>Prints Java thread stack traces for a Java process, core file,<br>
+or remote debug server. This command is experimental and unsupported.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ol>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-10 11:52:10 CEST
+Last updated 2015-09-12 19:37:51 CEST
 </div>
 </div>
 </body>
