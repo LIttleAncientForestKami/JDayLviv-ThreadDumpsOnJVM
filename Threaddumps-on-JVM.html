@@ -359,6 +359,7 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
 .literalblock > .content > pre, .listingblock > .content > pre { -webkit-border-radius: 0; border-radius: 0; }
 
 </style>
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css">
 </head>
 <body class="article">
 <div id="header">
@@ -412,7 +413,7 @@ Example rich talk, though rather aimed at beginners.</p>
 <h3 id="_about_kill_command">About kill command</h3>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">NOTE: kill</dt>
+<dt class="hdlist1">kill</dt>
 <dd>
 <p>send a signal to a process</p>
 <div class="literalblock">
@@ -457,10 +458,13 @@ Essentially a wrapper around <em>kill</em> syscall.</p>
 <table>
 <tr>
 <td class="icon">
-<div class="title">Tip</div>
+<i class="icon-tip" title="Tip"></i>
 </td>
 <td class="content">
 <div class="title">Further reading about <code>kill</code></div>
+<div class="paragraph">
+<p>Excellent pieces of information, especially the first one:</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -492,7 +496,7 @@ Essentially a wrapper around <em>kill</em> syscall.</p>
 <table>
 <tr>
 <td class="icon">
-<div class="title">Caution</div>
+<i class="icon-caution" title="Caution"></i>
 </td>
 <td class="content">
 <div class="title">Java and signals</div>
@@ -546,7 +550,7 @@ system. This command is experimental and unsupported.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="javapid.gif" alt="Comparison of the above">
+<img src="javapid.gif" alt="Image shows comparison of ways above">
 </div>
 </div>
 </div>
@@ -558,10 +562,10 @@ system. This command is experimental and unsupported.</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><code>kill -3</code></p>
+<p><code>kill -3 JAVA_PID</code></p>
 </li>
 <li>
-<p><code>jstack</code></p>
+<p><code>jstack JAVA_PID</code></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">jstack</dt>
@@ -579,7 +583,7 @@ or remote debug server. This command is experimental and unsupported.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-12 19:37:51 CEST
+Last updated 2015-09-15 14:18:07 CEST
 </div>
 </div>
 </body>

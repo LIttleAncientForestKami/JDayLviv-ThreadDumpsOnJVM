@@ -23,7 +23,7 @@ Example rich talk, though rather aimed at beginners.
 
 === About kill command
 
-NOTE: kill:: send a signal to a process
+kill:: send a signal to a process
 
  kill -9 111
  kill -s SIGKILL 111 
@@ -41,6 +41,9 @@ Essentially a wrapper around _kill_ syscall.
 [TIP]
 .Further reading about `kill`
 ====
+Excellent pieces of information, especially the first one:
+
+
 . http://www.linux.org/threads/kill-signals-and-commands-revised.8096/
 . http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_12_01.html
 ====
