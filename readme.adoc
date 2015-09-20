@@ -197,4 +197,81 @@ What is a safepoint and why you should care?
 
 And when you have the threaddump... what's in there? 
 
-TIP: Links will be added later.
+
+== Commands used during presentation
+[listing]
+----
+jconsole
+ctrl+break
+
+kill -3 PID
+kill -s 3 PID
+kill -QUIT PID
+
+type kill
+man kill
+
+man -k signal
+
+man --section 7 signals | grep SIGQUIT
+man --section 7 signals | grep Core
+
+man core
+
+vim /proc/sys/kernel/core_pattern
+
+
+ps | grep java
+
+pgrep java
+pgrep -u root java
+pgrep -u root,tammo java
+
+jps -q
+
+
+jps
+jps -l
+jps -m
+jcmd
+jps -v
+jcmd -l
+
+ls /tmp/hsperfdata_tammo/
+while true; do; ls /tmp/hsperfdata_tammo/; done
+
+
+jcmd -options
+jcmd 12769 help
+jcmd 12769 help Thread.print
+jcmd 12769 Thread.print
+
+jcmd 12769 Thread.print > threads
+jcmd 12769 Thread.print -l > threadsAndLocks
+
+jcmd 14222 Thread.print -l > threadsAndLocks
+
+jstack 14222 > threaddump
+
+man jcmd
+man jinfo
+man jstack
+jvisualvm -J-Xverbose:gc
+
+for i in $(seq 1 5); do; jstack 16002 > td$i; echo $i; sleep 5; done;
+
+jconsole
+jvisualvm
+----
+
+== Bibliography / Links 
+Besides link already used and added earlier, few others caught my eye:
+
+IMPORTANT: http://stackoverflow.com/a/14119817/999165[Peter Lawrey's one-liner for poor-man's profiler... in Java code itself!]
+
+NOTE: http://www.javacodegeeks.com/2012/03/jvm-how-to-analyze-thread-dump.htmli[Pierre Hugues Charbonneau on Java Code Geeks presents thread dump analisys]
+
+TIP: http://bugs.java.com/view_bug.do;jsessionid=fd2c497ca59504cd004165ec66fc?bug_id=6740344[Bug report turned doc enhancement request, on SIGHUP handling by JVM]
+
+CAUTION: If you started process in the background and killed it's terminal, process might get killed. If it ain't, then 
+http://stackoverflow.com/questions/593724/redirect-stderr-stdout-of-a-process-after-its-been-started-using-command-lin[to redirect it's output is no easy task]. Still, it's feasible. 
