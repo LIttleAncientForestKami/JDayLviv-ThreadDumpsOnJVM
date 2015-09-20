@@ -66,6 +66,28 @@ Let's add more for just one JVM:
 
 image::MemoryInJVM.png[Memory organization in JVM]
 
+See `limit`, Bash built-in. In my case:
+----
+➜  ThreaddumpsOnJVM git:(master) ✗ limit
+cputime         unlimited
+filesize        unlimited
+datasize        unlimited
+stacksize       8MB
+coredumpsize    0kB
+memoryuse       unlimited
+maxproc         63635
+descriptors     1024
+memorylocked    64kB
+addressspace    unlimited
+maxfilelocks    unlimited
+sigpending      63635
+msgqueue        819200
+nice            0
+rt_priority     0
+rt_time         unlimited
+----
+Interesting limits are _stacksize_, _descriptors_ and _maxfilelocks_ when speaking about threads.
+
 == How can you take a threaddump?
 
 . `kill -3 JAVA_PID_HERE`
@@ -197,6 +219,15 @@ What is a safepoint and why you should care?
 
 And when you have the threaddump... what's in there? 
 
+. JVM and Java info
+. Thread dump info
+. Stack traces of threads
+. Heap breakdown
+
+=== Comparing printing threads
+With `-l` we have also lock information, who holds what:
+
+image::comparisonBetweenThreadsAndThreadsWithLocks.png[Shows difference between just printing threads and printing them with lock info via `-l`]
 
 == Commands used during presentation
 [listing]

@@ -1,0 +1,61 @@
+jconsole
+ctrl+break
+
+kill -3 PID
+kill -s 3 PID
+kill -QUIT PID
+
+type kill
+man kill
+
+man -k signal
+
+man --section 7 signals | grep SIGQUIT
+man --section 7 signals | grep Core
+
+man core
+
+vim /proc/sys/kernel/core_pattern
+
+
+ps | grep java
+
+pgrep java
+pgrep -u root java
+pgrep -u root,tammo java
+
+jps -q
+
+
+jps
+jps -l
+jps -m
+jcmd
+jps -v
+jcmd -l
+
+ls /tmp/hsperfdata_tammo/
+while true; do; ls /tmp/hsperfdata_tammo/; done
+
+
+jcmd -options
+jcmd 12769 help
+jcmd 12769 help Thread.print
+jcmd 12769 Thread.print
+
+jcmd 12769 Thread.print > threads
+jcmd 12769 Thread.print -l > threadsAndLocks
+
+jcmd 14222 Thread.print -l > threadsAndLocks
+
+jstack 14222 > threaddump
+
+man jcmd
+man jinfo
+man jstack
+jvisualvm -J-Xverbose:gc
+
+for i in $(seq 1 5); do; jstack 16002 > td$i; echo $i; sleep 5; done;
+
+jconsole
+jvisualvm
