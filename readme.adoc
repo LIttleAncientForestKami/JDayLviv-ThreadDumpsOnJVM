@@ -16,9 +16,59 @@ We'll talk about thread lifecycle.
 And naming. Oh, the naming! 
 Example rich talk, though rather aimed at beginners. 
 
+== JVM overview
+
+From http://2.bp.blogspot.com/:
+
+image::JVM_middleware_interactions.png[Image showing where threads work and from where they originate from]
+
+=== Threads
+
+. instances of java.lang.Thread
+. have associated native thread
+. have names (or are named Thread#nextNumberInSequence)
+. have local variables, accessible only to given thread
+
+[IMPORTANT]
+.Thread lifecycle
+====
+*Enum: `java.lang.Thread.State`:*
+
+NEW:: Thread state for a thread which has not yet started.
+
+RUNNABLE:: Thread state for a runnable thread.
+
+BLOCKED:: Thread state for a thread blocked waiting for a monitor lock.
+
+WAITING:: A thread in the waiting state is waiting for another thread to perform a particular action.
+
+TIMED_WAITING:: A thread that is waiting for another thread to perform an action for up to a specified waiting time is in this state. 
+
+TERMINATED:: A thread that has exited is in this state. 
+
+`Thread.getState()` gives you that.
+====
+Native thread gets created in NEW and reclaimed upon thread termination.
+
+CAUTION: _RUNNABLE_ means OK, right?
+
+
+
+=== Thread limits?
+
+Are there any?
+
+What limits the threads?
+
+image::Heap.png[JVM and RAM]
+
+Let's add more for just one JVM:
+
+image::MemoryInJVM.png[Memory organization in JVM]
+
 == How can you take a threaddump?
 
-. `kill -3`
+. `kill -3 JAVA_PID_HERE`
 
 
 === About kill command
@@ -76,6 +126,22 @@ sends diagnostic command requests to a running JVM.
 
 image::javapid.gif[Image shows comparison of ways above]
 
+image::java_pid_java_tools.png[Image shows how Java tools offer Java PIDs]
+
+
+[WARNING]
+.`jps` output is empty?
+====
+. which user is running the Java process you are looking for?
+. `ls -l /tmp/hsperfdata_YourUserHere/`
+. check the `-Djava.io.tmpdir` flag or start JVM setting it to `=/someDir`.
+
+More:
+. http://stackoverflow.com/questions/3805376/jps-returns-no-output-even-when-java-processes-are-running
+. https://devopsengineer.wordpress.com/2014/01/24/java-jps-cannot-see-running-java-processes/
+====
+
+
 == How can you take a threaddump?
 
 . `kill -3 JAVA_PID`
@@ -85,3 +151,50 @@ jstack::
 Prints Java thread stack traces for a Java process, core file,
 or remote debug server. This command is experimental and unsupported.
 
+TIP: Poor man's debugger? `jstack` in a loop... However, can pinpoint live-locks!
+
+
+== How can you take a threaddump?
+
+. `kill -3 JAVA_PID`
+. `jstack JAVA_PID`
+. `Ctrl`+`\`
+. `jconsole`
+. `jvisualvm`
+
+[CAUTION]
+.Dump location? 
+====
+. Your process' console
+. Current directory
+. JVM settings
+.. different JVMs, different flags
+. System settings?
+.. `man core`
+.. `cat /proc/sys/kernel/core_pattern`
+
+http://stackoverflow.com/questions/2065912/core-dumped-but-core-file-is-not-in-current-directory
+http://stackoverflow.com/questions/2062493/jvm-thread-dump-location
+
+====
+
+== Printing threads then?
+
+`jcmd`
+
+
+=== Going native...
+
+`whichThreadIsIt.sh`
+
+`ps -mo lwp,c -p 14222`
+
+=== Safepoints
+
+What is a safepoint and why you should care? 
+
+=== Thread dump then
+
+And when you have the threaddump... what's in there? 
+
+TIP: Links will be added later.
