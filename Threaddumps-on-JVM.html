@@ -369,6 +369,13 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_promise">Promise</a></li>
+<li><a href="#_jvm_overview">JVM overview</a></li>
+<li>
+<ul class="sectlevel2">
+<li><a href="#_threads">Threads</a></li>
+<li><a href="#_thread_limits">Thread limits?</a></li>
+</ul>
+</li>
 <li><a href="#_how_can_you_take_a_threaddump">How can you take a threaddump?</a></li>
 <li>
 <ul class="sectlevel2">
@@ -378,6 +385,18 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
 </ul>
 </li>
 <li><a href="#_how_can_you_take_a_threaddump_2">How can you take a threaddump?</a></li>
+<li><a href="#_how_can_you_take_a_threaddump_3">How can you take a threaddump?</a></li>
+<li><a href="#_printing_threads_then">Printing threads then?</a></li>
+<li>
+<ul class="sectlevel2">
+<li><a href="#_going_native">Going native&#8230;</a></li>
+<li><a href="#_safepoints">Safepoints</a></li>
+<li><a href="#_thread_dump_then">Thread dump then</a></li>
+<li><a href="#_comparing_printing_threads">Comparing printing threads</a></li>
+</ul>
+</li>
+<li><a href="#_commands_used_during_presentation">Commands used during presentation</a></li>
+<li><a href="#_bibliography_links">Bibliography / Links</a></li>
 </ul>
 </div>
 </div>
@@ -400,12 +419,154 @@ Example rich talk, though rather aimed at beginners.</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="_jvm_overview">JVM overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>From <a href="http://2.bp.blogspot.com/:">http://2.bp.blogspot.com/:</a></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="JVM_middleware_interactions.png" alt="Image showing where threads work and from where they originate from">
+</div>
+</div>
+<div class="sect2">
+<h3 id="_threads">Threads</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>instances of java.lang.Thread</p>
+</li>
+<li>
+<p>have associated native thread</p>
+</li>
+<li>
+<p>have names (or are named Thread#nextNumberInSequence)</p>
+</li>
+<li>
+<p>have local variables, accessible only to given thread</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="title">Thread lifecycle</div>
+<div class="paragraph">
+<p><strong>Enum: <code>java.lang.Thread.State</code>:</strong></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">NEW</dt>
+<dd>
+<p>Thread state for a thread which has not yet started.</p>
+</dd>
+<dt class="hdlist1">RUNNABLE</dt>
+<dd>
+<p>Thread state for a runnable thread.</p>
+</dd>
+<dt class="hdlist1">BLOCKED</dt>
+<dd>
+<p>Thread state for a thread blocked waiting for a monitor lock.</p>
+</dd>
+<dt class="hdlist1">WAITING</dt>
+<dd>
+<p>A thread in the waiting state is waiting for another thread to perform a particular action.</p>
+</dd>
+<dt class="hdlist1">TIMED_WAITING</dt>
+<dd>
+<p>A thread that is waiting for another thread to perform an action for up to a specified waiting time is in this state.</p>
+</dd>
+<dt class="hdlist1">TERMINATED</dt>
+<dd>
+<p>A thread that has exited is in this state.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><code>Thread.getState()</code> gives you that.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Native thread gets created in NEW and reclaimed upon thread termination.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<em>RUNNABLE</em> means OK, right?
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_thread_limits">Thread limits?</h3>
+<div class="paragraph">
+<p>Are there any?</p>
+</div>
+<div class="paragraph">
+<p>What limits the threads?</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="Heap.png" alt="JVM and RAM">
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s add more for just one JVM:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="MemoryInJVM.png" alt="Memory organization in JVM">
+</div>
+</div>
+<div class="paragraph">
+<p>See <code>limit</code>, Bash built-in. In my case:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>➜  ThreaddumpsOnJVM git:(master) ✗ limit
+cputime         unlimited
+filesize        unlimited
+datasize        unlimited
+stacksize       8MB
+coredumpsize    0kB
+memoryuse       unlimited
+maxproc         63635
+descriptors     1024
+memorylocked    64kB
+addressspace    unlimited
+maxfilelocks    unlimited
+sigpending      63635
+msgqueue        819200
+nice            0
+rt_priority     0
+rt_time         unlimited</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Interesting limits are <em>stacksize</em>, <em>descriptors</em> and <em>maxfilelocks</em> when speaking about threads.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_how_can_you_take_a_threaddump">How can you take a threaddump?</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><code>kill -3</code></p>
+<p><code>kill -3 JAVA_PID_HERE</code></p>
 </li>
 </ol>
 </div>
@@ -553,6 +714,41 @@ system. This command is experimental and unsupported.</p>
 <img src="javapid.gif" alt="Image shows comparison of ways above">
 </div>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="java_pid_java_tools.png" alt="Image shows how Java tools offer Java PIDs">
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="title"><code>jps</code> output is empty?</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>which user is running the Java process you are looking for?</p>
+</li>
+<li>
+<p><code>ls -l /tmp/hsperfdata_YourUserHere/</code></p>
+</li>
+<li>
+<p>check the <code>-Djava.io.tmpdir</code> flag or start JVM setting it to <code>=/someDir</code>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>More:<br>
+. <a href="http://stackoverflow.com/questions/3805376/jps-returns-no-output-even-when-java-processes-are-running">http://stackoverflow.com/questions/3805376/jps-returns-no-output-even-when-java-processes-are-running</a><br>
+. <a href="https://devopsengineer.wordpress.com/2014/01/24/java-jps-cannot-see-running-java-processes/">https://devopsengineer.wordpress.com/2014/01/24/java-jps-cannot-see-running-java-processes/</a></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -578,12 +774,280 @@ or remote debug server. This command is experimental and unsupported.</p>
 </li>
 </ol>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Poor man&#8217;s debugger? <code>jstack</code> in a loop&#8230; However, can pinpoint live-locks!
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_can_you_take_a_threaddump_3">How can you take a threaddump?</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>kill -3 JAVA_PID</code></p>
+</li>
+<li>
+<p><code>jstack JAVA_PID</code></p>
+</li>
+<li>
+<p><code>Ctrl</code>+<code>\</code></p>
+</li>
+<li>
+<p><code>jconsole</code></p>
+</li>
+<li>
+<p><code>jvisualvm</code></p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="title">Dump location?</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Your process' console</p>
+</li>
+<li>
+<p>Current directory</p>
+</li>
+<li>
+<p>JVM settings</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>different JVMs, different flags</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>System settings?</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><code>man core</code></p>
+</li>
+<li>
+<p><code>cat /proc/sys/kernel/core_pattern</code></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><a href="http://stackoverflow.com/questions/2065912/core-dumped-but-core-file-is-not-in-current-directory">http://stackoverflow.com/questions/2065912/core-dumped-but-core-file-is-not-in-current-directory</a><br>
+<a href="http://stackoverflow.com/questions/2062493/jvm-thread-dump-location">http://stackoverflow.com/questions/2062493/jvm-thread-dump-location</a></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_printing_threads_then">Printing threads then?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>jcmd</code></p>
+</div>
+<div class="sect2">
+<h3 id="_going_native">Going native&#8230;</h3>
+<div class="paragraph">
+<p><code>whichThreadIsIt.sh</code></p>
+</div>
+<div class="paragraph">
+<p><code>ps -mo lwp,c -p 14222</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_safepoints">Safepoints</h3>
+<div class="paragraph">
+<p>What is a safepoint and why you should care?</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_thread_dump_then">Thread dump then</h3>
+<div class="paragraph">
+<p>And when you have the threaddump&#8230; what&#8217;s in there?</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>JVM and Java info</p>
+</li>
+<li>
+<p>Thread dump info</p>
+</li>
+<li>
+<p>Stack traces of threads</p>
+</li>
+<li>
+<p>Heap breakdown</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_comparing_printing_threads">Comparing printing threads</h3>
+<div class="paragraph">
+<p>With <code>-l</code> we have also lock information, who holds what:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="comparisonBetweenThreadsAndThreadsWithLocks.png" alt="Shows difference between just printing threads and printing them with lock info via `-l`">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_commands_used_during_presentation">Commands used during presentation</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre>jconsole
+ctrl+break
+
+kill -3 PID
+kill -s 3 PID
+kill -QUIT PID
+
+type kill
+man kill
+
+man -k signal
+
+man --section 7 signals | grep SIGQUIT
+man --section 7 signals | grep Core
+
+man core
+
+vim /proc/sys/kernel/core_pattern
+
+
+ps | grep java
+
+pgrep java
+pgrep -u root java
+pgrep -u root,tammo java
+
+jps -q
+
+
+jps
+jps -l
+jps -m
+jcmd
+jps -v
+jcmd -l
+
+ls /tmp/hsperfdata_tammo/
+while true; do; ls /tmp/hsperfdata_tammo/; done
+
+
+jcmd -options
+jcmd 12769 help
+jcmd 12769 help Thread.print
+jcmd 12769 Thread.print
+
+jcmd 12769 Thread.print &gt; threads
+jcmd 12769 Thread.print -l &gt; threadsAndLocks
+
+jcmd 14222 Thread.print -l &gt; threadsAndLocks
+
+jstack 14222 &gt; threaddump
+
+man jcmd
+man jinfo
+man jstack
+jvisualvm -J-Xverbose:gc
+
+for i in $(seq 1 5); do; jstack 16002 &gt; td$i; echo $i; sleep 5; done;
+
+jconsole
+jvisualvm</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_bibliography_links">Bibliography / Links</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Besides link already used and added earlier, few others caught my eye:</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-important" title="Important"></i>
+</td>
+<td class="content">
+<a href="http://stackoverflow.com/a/14119817/999165">Peter Lawrey&#8217;s one-liner for poor-man&#8217;s profiler&#8230; in Java code itself!</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-note" title="Note"></i>
+</td>
+<td class="content">
+<a href="http://www.javacodegeeks.com/2012/03/jvm-how-to-analyze-thread-dump.htmli">Pierre Hugues Charbonneau on Java Code Geeks presents thread dump analisys</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<a href="http://bugs.java.com/view_bug.do;jsessionid=fd2c497ca59504cd004165ec66fc?bug_id=6740344">Bug report turned doc enhancement request, on SIGHUP handling by JVM</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+If you started process in the background and killed it&#8217;s terminal, process might get killed. If it ain&#8217;t, then<br>
+<a href="http://stackoverflow.com/questions/593724/redirect-stderr-stdout-of-a-process-after-its-been-started-using-command-lin">to redirect it&#8217;s output is no easy task</a>. Still, it&#8217;s feasible.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-15 14:18:07 CEST
+Last updated 2015-09-20 03:23:08 CEST
 </div>
 </div>
 </body>
